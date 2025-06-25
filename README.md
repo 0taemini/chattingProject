@@ -29,31 +29,31 @@
 ## 아키텍처
 
 ```mermaid
-graph LR
-    subgraph Client
-        A[Vue.js + SockJS/STOMP]
-    end
-    subgraph Server
-        B[Spring Boot]
-        C[WebSocket/STOMP Endpoint (/ws-chat)]
-        D[REST API (/api/chat)]
-    end
-    subgraph Broker
-        E[RabbitMQ/Kafka Relay]
-    end
-    subgraph Persistence
-        F[MySQL (Spring Data JPA)]
-        G[Redis Pub/Sub Cache]
-    end
+flowchart TD
+  subgraph Client [🖥️ Client]
+    UI([Vue.js + SockJS/STOMP])
+  end
+  subgraph Server [🚀 Server]
+    SB([Spring Boot])
+    WE([WebSocket<br>/ws-chat])
+    RA([REST API<br>/api/chat])
+    SB --> WE
+    SB --> RA
+  end
+  subgraph Broker [📡 Broker]
+    RB([RabbitMQ/Kafka Relay])
+  end
+  subgraph Storage [💾 Persistence]
+    DB([MySQL<br>Spring Data JPA])
+    RC([Redis Pub/Sub])
+  end
 
-    A -- "WebSocket (STOMP) Connection" --> C
-    A -- "REST Request" --> D
-    C -- "STOMP FRAME" --> E
-    E -- "Message Relay" --> C
-    B -- "Store/Retrieve" --> F
-    B -- "Cache Pub/Sub" --> G
-    B --> C
-    B --> D
+  UI -->|WebSocket| WE
+  UI -->|REST| RA
+  WE -->|STOMP| RB
+  RB -->|relay| WE
+  SB --> DB
+  SB --> RC
 ```
 
 1. **클라이언트(Vue.js)**  
@@ -148,7 +148,7 @@ docker-compose up --build
 
 ## 프로젝트 일정
 
-- **기간:** 2025-06-18 ~ 2025-07-06  
+- **기간:** 2025-06-25 ~ 2025-07-15  
 - **목표:** 배포 가능한 실시간 채팅 서비스 완성
 
 ---
@@ -177,6 +177,3 @@ docker-compose up --build
 
 ---
 
-## 라이선스
-
-MIT
