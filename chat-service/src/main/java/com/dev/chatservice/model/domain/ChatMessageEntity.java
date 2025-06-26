@@ -6,7 +6,9 @@ import lombok.*;
 
 @Entity @Getter @NoArgsConstructor @ AllArgsConstructor @Builder
 public class ChatMessageEntity {
-    @Id @GeneratedValue private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Enumerated(EnumType.STRING)
     private ChatMessage.MessageType type;
 
